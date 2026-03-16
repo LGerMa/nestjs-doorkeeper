@@ -16,7 +16,7 @@ export interface DashboardOptions {
 export type CurrentUserMode = "entity" | "payload" | "subset";
 
 export interface AuthModuleOptions {
-  tablePrefix?: string; // default 'dk'
+  tablePrefix?: string; // default 'auth'
   global?: boolean; // default true
   currentUser?: CurrentUserMode; // default 'subset'
   jwt: JwtOptions; // required

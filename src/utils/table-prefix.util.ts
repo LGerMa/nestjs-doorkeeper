@@ -1,23 +1,26 @@
 import { getMetadataArgsStorage } from "typeorm";
+import { UserEntity } from "../entities/user.entity";
+import { SessionEntity } from "../entities/session.entity";
 
+const ENTITY_TABLE_MAP = new Map<Function, string>([
+  [UserEntity, "users"],
+  [SessionEntity, "sessions"],
+]);
+
+/**
+ * Patches TypeORM metadata at runtime so doorkeeper tables use the configured
+ * prefix. Must be called before the TypeORM DataSource is initialized.
+ *
+ * @example applyTablePrefix("dk")   → dk_users, dk_sessions
+ * @example applyTablePrefix("acme") → acme_users, acme_sessions
+ */
 export function applyTablePrefix(prefix: string): void {
   const storage = getMetadataArgsStorage();
 
-  const targets = [
-    { target: "UserEntity", table: "users" },
-    { target: "SessionEntity", table: "sessions" },
-  ];
-
-  storage.tables
-    .filter((t) =>
-      targets.some((e) => e.target === (t.target as Function).name),
-    )
-    .forEach((t) => {
-      const match = targets.find(
-        (e) => e.target === (t.target as Function).name,
-      );
-      if (match) {
-        t.name = `${prefix}_${match.table}`;
-      }
-    });
+  for (const tableMeta of storage.tables) {
+    const baseName = ENTITY_TABLE_MAP.get(tableMeta.target as Function);
+    if (baseName) {
+      tableMeta.name = `${prefix}_${baseName}`;
+    }
+  }
 }

@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { UserEntity } from "./user.entity";
 
-@Entity("doorkeeper_sessions")
+@Entity("auth_sessions")
 export class SessionEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;

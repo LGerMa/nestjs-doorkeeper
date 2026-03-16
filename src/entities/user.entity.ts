@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { SessionEntity } from "./session.entity";
 
-@Entity("doorkeeper_users")
+@Entity("auth_users")
 export class UserEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
