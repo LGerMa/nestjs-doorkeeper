@@ -1,3 +1,5 @@
+export const DOORKEEPER_OPTIONS = Symbol("DOORKEEPER_OPTIONS");
+
 export interface JwtOptions {
   secret: string;
   accessTokenTtl?: string; // default '15m'
