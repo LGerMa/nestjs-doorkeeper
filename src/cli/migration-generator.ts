@@ -29,7 +29,7 @@ export class ${className} implements MigrationInterface {
       new Table({
         name: "${p}_users",
         columns: [
-          { name: "id",            type: "uuid",      isPrimary: true, generationStrategy: "uuid", default: "uuid_generate_v4()" },
+          { name: "id",            type: "uuid",      isPrimary: true, generationStrategy: "uuid", default: "gen_random_uuid()" },
           { name: "email",         type: "varchar",   isUnique: true,  isNullable: false },
           { name: "password_hash", type: "varchar",   isNullable: false },
           { name: "is_active",     type: "boolean",   default: true },
@@ -44,7 +44,7 @@ export class ${className} implements MigrationInterface {
       new Table({
         name: "${p}_sessions",
         columns: [
-          { name: "id",            type: "uuid",      isPrimary: true, generationStrategy: "uuid", default: "uuid_generate_v4()" },
+          { name: "id",            type: "uuid",      isPrimary: true, generationStrategy: "uuid", default: "gen_random_uuid()" },
           { name: "user_id",       type: "uuid",      isNullable: false },
           { name: "access_token",  type: "varchar",   isNullable: false },
           { name: "refresh_token", type: "varchar",   isNullable: false, isUnique: true },

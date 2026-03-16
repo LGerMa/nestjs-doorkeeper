@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { IS_PUBLIC_KEY } from "../decorators/public.decorator";
+import { IS_PUBLIC_KEY } from "../decorators/keys";
 import { TokenService } from "../services/token.service";
 import { IDoorkeeperAdapter, DOORKEEPER_ADAPTER } from "../adapters/adapter.interface";
 import { AuthModuleOptions, DOORKEEPER_OPTIONS } from "../module/auth.module.options";
@@ -44,7 +44,7 @@ export class JwtAuthGuard implements CanActivate {
       request.user = payload;
     } else if (mode === "entity") {
       const user = await this.adapter.users.findById(payload.sub);
-      if (!user || !user.isActive) throw new UnauthorizedException("User not found");
+      if (!user?.isActive) throw new UnauthorizedException("User not found");
       request.user = user;
     } else {
       // subset — default, no DB hit

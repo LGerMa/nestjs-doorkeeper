@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import { detectAdapter, DetectedAdapter } from "./detector";
+import { detectAdapter, detectDataSourceDir, DetectedAdapter } from "./detector";
 import { promptConfig } from "./prompt";
 import { generateMigration } from "./migration-generator";
 
@@ -21,7 +21,8 @@ export async function runInit(): Promise<void> {
     console.warn("⚠  No supported ORM detected. Defaulting to TypeORM.");
   }
 
-  const answers = await promptConfig();
+  const defaultMigrationsDir = detectDataSourceDir(cwd) ?? path.join(cwd, "src", "migrations");
+  const answers = await promptConfig(defaultMigrationsDir);
 
   console.log();
   console.log(`✔ Access token TTL:     ${answers.accessTokenTtl}`);
@@ -29,9 +30,10 @@ export async function runInit(): Promise<void> {
   console.log(`✔ JWT secret env var:   ${answers.jwtSecretEnvVar}`);
   console.log(`✔ Table prefix:         ${answers.tablePrefix}`);
   console.log(`✔ Route prefix:         ${answers.routePrefix}`);
+  console.log(`✔ Migrations folder:    ${answers.migrationsDir}`);
   console.log();
 
-  const outputDir = path.join(cwd, "src", "migrations");
+  const outputDir = answers.migrationsDir;
   console.log("Generating migration...");
   const filePath = generateMigration({ tablePrefix: answers.tablePrefix, outputDir });
   const relative = path.relative(cwd, filePath);
