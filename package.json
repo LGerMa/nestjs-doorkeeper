@@ -1,12 +1,76 @@
 {
   "name": "nestjs-doorkeeper",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./guards": {
+      "require": "./dist/guards/index.js",
+      "import": "./dist/guards/index.mjs",
+      "types": "./dist/guards/index.d.ts"
+    },
+    "./decorators": {
+      "require": "./dist/decorators/index.js",
+      "import": "./dist/decorators/index.mjs",
+      "types": "./dist/decorators/index.d.ts"
+    },
+    "./services": {
+      "require": "./dist/services/index.js",
+      "import": "./dist/services/index.mjs",
+      "types": "./dist/services/index.d.ts"
+    },
+    "./entities": {
+      "require": "./dist/entities/index.js",
+      "import": "./dist/entities/index.mjs",
+      "types": "./dist/entities/index.d.ts"
+    },
+    "./adapters": {
+      "require": "./dist/adapters/index.js",
+      "import": "./dist/adapters/index.mjs",
+      "types": "./dist/adapters/index.d.ts"
+    }
+  },
+  "bin": {
+    "nestjs-doorkeeper": "./bin/doorkeeper.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.1.16",
+    "@nestjs/core": "^11.1.16",
+    "@nestjs/jwt": "^11.0.2",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^25.5.0",
+    "reflect-metadata": "^0.2.2",
+    "tsup": "^8.5.1",
+    "typeorm": "^0.3.28",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.0.0",
+    "reflect-metadata": "^0.1.0 || ^0.2.0",
+    "typeorm": "^0.3.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
 }
