@@ -13,6 +13,7 @@ export interface CreateSessionInput {
   browserName?: string | null;
   osName?: string | null;
   osVersion?: string | null;
+  lastUsedAt?: Date | null;
 }
 
 export interface IUserRepository {

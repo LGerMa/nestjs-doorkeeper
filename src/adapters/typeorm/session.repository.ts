@@ -22,6 +22,7 @@ export class TypeOrmSessionRepository implements ISessionRepository {
       browserName: data.browserName ?? null,
       osName: data.osName ?? null,
       osVersion: data.osVersion ?? null,
+      lastUsedAt: data.lastUsedAt ?? null,
     });
     return this.repo.save(session);
   }
