@@ -1,5 +1,7 @@
+export type DeviceType = "desktop" | "mobile" | "tablet";
+
 export interface ParsedDevice {
-  deviceType: "desktop" | "mobile" | "tablet" | null;
+  deviceType: DeviceType | null;
   deviceName: string | null;
   browserName: string | null;
   osName: string | null;
@@ -20,77 +22,85 @@ export function parseDevice(headers: RequestHeaders): ParsedDevice {
   const platform = headers["sec-ch-ua-platform"]?.replace(/"/g, "");
   const isMobileHint = headers["sec-ch-ua-mobile"] === "?1";
 
-  // ─── OS ─────────────────────────────────────────────────
-  let osName: string | null = null;
-  let osVersion: string | null = null;
-
-  if (platform) {
-    osName = platform; // e.g. "macOS", "Windows", "Android"
-  } else if (/windows nt ([\d.]+)/i.test(ua)) {
-    osName = "Windows";
-    osVersion = windowsVersion(RegExp.$1);
-  } else if (/mac os x ([\d_]+)/i.test(ua)) {
-    osName = "macOS";
-    osVersion = RegExp.$1.replace(/_/g, ".");
-  } else if (/android ([\d.]+)/i.test(ua)) {
-    osName = "Android";
-    osVersion = RegExp.$1;
-  } else if (/iphone os ([\d_]+)/i.test(ua)) {
-    osName = "iOS";
-    osVersion = RegExp.$1.replace(/_/g, ".");
-  } else if (/ipad; cpu os ([\d_]+)/i.test(ua)) {
-    osName = "iOS";
-    osVersion = RegExp.$1.replace(/_/g, ".");
-  } else if (/linux/i.test(ua)) {
-    osName = "Linux";
-  }
-
-  // ─── Browser ────────────────────────────────────────────
-  let browserName: string | null = null;
-
-  if (/edg\//i.test(ua)) {
-    browserName = "Edge";
-  } else if (/opr\//i.test(ua) || /opera/i.test(ua)) {
-    browserName = "Opera";
-  } else if (/firefox\//i.test(ua)) {
-    browserName = "Firefox";
-  } else if (/chrome\//i.test(ua)) {
-    browserName = "Chrome";
-  } else if (/safari\//i.test(ua)) {
-    browserName = "Safari";
-  }
-
-  // ─── Device type ────────────────────────────────────────
-  let deviceType: "desktop" | "mobile" | "tablet" | null = null;
-
-  if (isMobileHint) {
-    deviceType = "mobile";
-  } else if (/tablet|ipad/i.test(ua)) {
-    deviceType = "tablet";
-  } else if (/mobile|android|iphone/i.test(ua)) {
-    deviceType = "mobile";
-  } else if (ua) {
-    deviceType = "desktop";
-  }
-
-  // ─── Device name ────────────────────────────────────────
-  let deviceName: string | null = null;
-
-  if (/iphone/i.test(ua)) {
-    deviceName = "iPhone";
-  } else if (/ipad/i.test(ua)) {
-    deviceName = "iPad";
-  } else if (/macintosh/i.test(ua)) {
-    deviceName = "Mac";
-  }
-
-  return { deviceType, deviceName, browserName, osName, osVersion };
+  return {
+    ...parseOs(ua, platform),
+    browserName: parseBrowser(ua),
+    ...parseDeviceInfo(ua, isMobileHint),
+  };
 }
 
 export function extractIp(headers: RequestHeaders, remoteAddress?: string): string | null {
   const forwarded = headers["x-forwarded-for"];
   if (forwarded) return forwarded.split(",")[0].trim();
   return remoteAddress ?? null;
+}
+
+// ─── Private helpers ────────────────────────────────────────────────────────
+
+function parseOs(ua: string, platform?: string): { osName: string | null; osVersion: string | null } {
+  if (platform) return { osName: platform, osVersion: null };
+
+  const unUnderscored = (v: string) => v.replaceAll("_", ".");
+
+  const rules: Array<[RegExp, string, ((m: string) => string)?]> = [
+    [/windows nt ([\d.]+)/i,   "Windows",  windowsVersion],
+    [/mac os x ([\d_]+)/i,     "macOS",    unUnderscored],
+    [/android ([\d.]+)/i,      "Android",  undefined],
+    [/iphone os ([\d_]+)/i,    "iOS",      unUnderscored],
+    [/ipad; cpu os ([\d_]+)/i, "iOS",      unUnderscored],
+    [/linux/i,                 "Linux",    undefined],
+  ];
+
+  for (const [pattern, name, transform] of rules) {
+    const match = pattern.exec(ua);
+    if (!match) continue;
+    let osVersion: string | null = null;
+    if (match[1]) osVersion = transform ? transform(match[1]) : match[1];
+    return { osName: name, osVersion };
+  }
+
+  return { osName: null, osVersion: null };
+}
+
+function parseBrowser(ua: string): string | null {
+  if (/edg\//i.test(ua))                      return "Edge";
+  if (/opr\//i.test(ua) || /opera/i.test(ua)) return "Opera";
+  if (/firefox\//i.test(ua))                  return "Firefox";
+  if (/chrome\//i.test(ua))                   return "Chrome";
+  if (/safari\//i.test(ua))                   return "Safari";
+  return null;
+}
+
+function parseDeviceInfo(ua: string, isMobileHint: boolean): {
+  deviceType: "desktop" | "mobile" | "tablet" | null;
+  deviceName: string | null;
+} {
+  return {
+    deviceType: parseDeviceType(ua, isMobileHint),
+    deviceName: parseDeviceName(ua),
+  };
+}
+
+function parseDeviceType(ua: string, isMobileHint: boolean): "desktop" | "mobile" | "tablet" | null {
+  if (isMobileHint)              return "mobile";
+  if (/tablet|ipad/i.test(ua))  return "tablet";
+  if (/mobile|android|iphone/i.test(ua)) return "mobile";
+  if (ua)                        return "desktop";
+  return null;
+}
+
+function parseDeviceName(ua: string): string | null {
+  if (/iphone/i.test(ua))    return "iPhone";
+  if (/ipad/i.test(ua))      return "iPad";
+  if (/macintosh/i.test(ua)) return "Mac";
+
+  if (/android/i.test(ua)) {
+    const pattern = /android[\s/][\d.]+;\s*(?:wv;\s*)?([^;)]+?)\s*(?:build|bui)[/\s)]/i;
+    const match = pattern.exec(ua);
+    return match ? match[1].trim() : "Android Device";
+  }
+
+  return null;
 }
 
 function windowsVersion(nt: string): string {

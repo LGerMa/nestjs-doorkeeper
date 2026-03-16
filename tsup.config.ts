@@ -12,6 +12,7 @@ export default defineConfig({
     "adapters/index": "src/adapters/index.ts",
   },
   format: ["cjs", "esm"], // ship both CommonJS and ESM
+  target: "es2021",
   dts: true, // generate .d.ts type declarations
   sourcemap: true,
   clean: true, // wipe dist/ before each build
