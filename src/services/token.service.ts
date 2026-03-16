@@ -14,7 +14,7 @@ export interface AccessTokenPayload {
 @Injectable()
 export class TokenService {
   constructor(
-    private readonly jwtService: JwtService,
+    @Inject(JwtService) private readonly jwtService: JwtService,
     @Inject(DOORKEEPER_OPTIONS) private readonly options: AuthModuleOptions,
   ) {}
 

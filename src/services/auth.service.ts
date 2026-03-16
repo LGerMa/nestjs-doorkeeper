@@ -9,7 +9,7 @@ const SALT_ROUNDS = 12;
 export class AuthService {
   constructor(
     @Inject(DOORKEEPER_ADAPTER) private readonly adapter: IDoorkeeperAdapter,
-    private readonly sessionService: SessionService,
+    @Inject(SessionService) private readonly sessionService: SessionService,
   ) {}
 
   async register(

@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Inject,
 } from "@nestjs/common";
 import { AuthService } from "../services/auth.service";
 import { SessionService } from "../services/session.service";
@@ -16,8 +17,8 @@ import { parseDevice, extractIp } from "../utils/device-parser.util";
 @Controller("auth")
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private readonly sessionService: SessionService,
+    @Inject(AuthService) private readonly authService: AuthService,
+    @Inject(SessionService) private readonly sessionService: SessionService,
   ) {}
 
   @Public()
