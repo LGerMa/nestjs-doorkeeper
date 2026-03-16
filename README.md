@@ -1,4 +1,4 @@
-# nestjs-doorkeeper
+# @lgerma/nestjs-doorkeeper
 
 A drop-in authentication module for NestJS inspired by Rails' Doorkeeper.
 Handles sessions, access tokens, refresh tokens, and device tracking out of the box.
@@ -42,7 +42,7 @@ Handles sessions, access tokens, refresh tokens, and device tracking out of the 
 ## Installation
 
 ```bash
-npm install nestjs-doorkeeper
+npm install @lgerma/nestjs-doorkeeper
 ```
 
 **Peer dependencies** (must already be installed in your app):
@@ -58,7 +58,7 @@ npm install @nestjs/common @nestjs/core @nestjs/jwt typeorm reflect-metadata
 Run the init command inside your NestJS project:
 
 ```bash
-npx nestjs-doorkeeper init
+npx @lgerma/nestjs-doorkeeper init
 ```
 
 This will:
@@ -80,7 +80,7 @@ npx typeorm migration:run -d src/data-source.ts
 ### Minimal (synchronous)
 
 ```ts
-import { AuthModule } from 'nestjs-doorkeeper';
+import { AuthModule } from '@lgerma/nestjs-doorkeeper';
 
 @Module({
   imports: [
@@ -112,7 +112,7 @@ AuthModule.forRoot({
 
 ```ts
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from 'nestjs-doorkeeper';
+import { AuthModule } from '@lgerma/nestjs-doorkeeper';
 
 AuthModule.forRootAsync({
   imports: [ConfigModule],
@@ -197,7 +197,7 @@ getProfile() {}
 Used internally on `POST /auth/refresh`. Can also be used manually if you need to protect a custom refresh endpoint:
 
 ```ts
-import { RefreshGuard } from 'nestjs-doorkeeper/guards';
+import { RefreshGuard } from '@lgerma/nestjs-doorkeeper/guards';
 
 @UseGuards(RefreshGuard)
 @Post('custom-refresh')
@@ -215,7 +215,7 @@ customRefresh(@Req() req: any) {
 Skips `JwtAuthGuard` on a route even when the guard is applied globally.
 
 ```ts
-import { Public } from 'nestjs-doorkeeper/decorators';
+import { Public } from '@lgerma/nestjs-doorkeeper/decorators';
 
 @Public()
 @Get('health')
@@ -237,7 +237,7 @@ export class WebhookController {}
 Injects the authenticated user into a route handler. The shape depends on `currentUser` mode.
 
 ```ts
-import { CurrentUser } from 'nestjs-doorkeeper/decorators';
+import { CurrentUser } from '@lgerma/nestjs-doorkeeper/decorators';
 
 @Get('profile')
 getProfile(@CurrentUser() user: { id: string; email: string }) {
@@ -293,12 +293,12 @@ Examples: `'30s'`, `'15m'`, `'2h'`, `'7d'`.
 
 | Import path | Exports |
 |---|---|
-| `nestjs-doorkeeper` | `AuthModule` |
-| `nestjs-doorkeeper/guards` | `JwtAuthGuard`, `RefreshGuard` |
-| `nestjs-doorkeeper/decorators` | `@CurrentUser`, `@Public` |
-| `nestjs-doorkeeper/services` | `AuthService`, `SessionService`, `TokenService` |
-| `nestjs-doorkeeper/entities` | `UserEntity`, `SessionEntity` |
-| `nestjs-doorkeeper/adapters` | `TypeOrmAdapter`, `IDoorkeeperAdapter` |
+| `@lgerma/nestjs-doorkeeper` | `AuthModule` |
+| `@lgerma/nestjs-doorkeeper/guards` | `JwtAuthGuard`, `RefreshGuard` |
+| `@lgerma/nestjs-doorkeeper/decorators` | `@CurrentUser`, `@Public` |
+| `@lgerma/nestjs-doorkeeper/services` | `AuthService`, `SessionService`, `TokenService` |
+| `@lgerma/nestjs-doorkeeper/entities` | `UserEntity`, `SessionEntity` |
+| `@lgerma/nestjs-doorkeeper/adapters` | `TypeOrmAdapter`, `IDoorkeeperAdapter` |
 
 ---
 
