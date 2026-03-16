@@ -61,10 +61,23 @@ Run the init command inside your NestJS project:
 npx @lgerma/nestjs-doorkeeper init
 ```
 
+The CLI will prompt you for:
+
+| Prompt | Default |
+|--------|---------|
+| Access token TTL | `15m` |
+| Refresh token TTL | `30d` |
+| JWT secret env var | `JWT_SECRET` |
+| Table prefix | `auth` |
+| Route prefix | `auth` |
+| Migrations output folder | auto-detected from `data-source.ts` location (e.g. `src/database/migrations`), falls back to `src/migrations` |
+
+The migrations folder is detected automatically by searching for a `data-source.ts` file under `src/`. If found, the migration is placed as a sibling in a `migrations/` subfolder next to it. You can override the path at the prompt.
+
 This will:
 1. Detect your ORM (TypeORM supported)
 2. Ask a few config questions (with defaults)
-3. Generate a TypeORM migration file at `src/migrations/`
+3. Generate a TypeORM migration file in the detected (or chosen) migrations folder
 4. Print exact next steps
 
 Then run the migration:
