@@ -1,5 +1,6 @@
 import { DynamicModule, Module, Provider } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { AuthModuleOptions, DOORKEEPER_OPTIONS } from "./auth.module.options";
 import { DOORKEEPER_ADAPTER } from "../adapters/adapter.interface";
@@ -10,6 +11,8 @@ import { AuthService } from "../services/auth.service";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { AuthController } from "../controllers/auth.controller";
 import { applyTablePrefix } from "../utils/table-prefix.util";
+import { UserEntity } from "../entities/user.entity";
+import { SessionEntity } from "../entities/session.entity";
 
 export interface AuthModuleAsyncOptions {
   imports?: any[];
@@ -46,6 +49,7 @@ export class AuthModule {
       module: AuthModule,
       global: options.global !== false,
       imports: [
+        TypeOrmModule.forFeature([UserEntity, SessionEntity]),
         JwtModule.register({
           secret: options.jwt.secret,
           signOptions: { expiresIn: (options.jwt.accessTokenTtl ?? "15m") as any },
@@ -70,6 +74,7 @@ export class AuthModule {
       module: AuthModule,
       global: asyncOptions.global !== false,
       imports: [
+        TypeOrmModule.forFeature([UserEntity, SessionEntity]),
         ...(asyncOptions.imports ?? []),
         JwtModule.registerAsync({
           inject: [DOORKEEPER_OPTIONS],

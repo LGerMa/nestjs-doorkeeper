@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0-rc.3] - 2026-03-16
+
+### Fixed
+- Added `@nestjs/typeorm` to `peerDependencies` (required by `AuthModule`)
+
+---
+
+## [1.0.0-rc.2] - 2026-03-16
+
+### Fixed
+- Migration generator now uses `gen_random_uuid()` instead of `uuid_generate_v4()` (no `uuid-ossp` extension required)
+- TypeORM entity columns now have explicit `type` definitions to avoid `ColumnTypeUndefinedError` in consuming projects
+
+---
+
 ## [1.0.0-rc.1] - 2026-03-16
 
 First release candidate. Core authentication features are complete and working.
