@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0-rc.5] - 2026-03-16
+
+### Fixed
+- Removed `TypeOrmModule.forFeature()` from `AuthModule` — it caused NestJS to hang during bootstrap due to a conflict with `applyTablePrefix` metadata mutation. The `TypeOrmAdapter` uses `dataSource.getRepository()` directly so it was never needed.
+
+---
+
+## [1.0.0-rc.4] - 2026-03-16
+
+### Fixed
+- Removed `TypeOrmModule.forFeature()` from `AuthModule` — it caused NestJS to hang during bootstrap due to a conflict with `applyTablePrefix` metadata mutation. The `TypeOrmAdapter` uses `dataSource.getRepository()` directly so it was never needed.
+
+---
+
 ## [1.0.0-rc.3] - 2026-03-16
 
 ### Fixed

@@ -1,6 +1,6 @@
 {
   "name": "@lgerma/nestjs-doorkeeper",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "Drop-in NestJS authentication library with JWT, refresh tokens, session tracking, and device detection — inspired by Rails Doorkeeper",
   "keywords": [
     "nestjs",

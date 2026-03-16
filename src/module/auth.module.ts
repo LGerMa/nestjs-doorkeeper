@@ -2,6 +2,8 @@ import { DynamicModule, Module, Provider } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
+import { UserEntity } from "../entities/user.entity";
+import { SessionEntity } from "../entities/session.entity";
 import { AuthModuleOptions, DOORKEEPER_OPTIONS } from "./auth.module.options";
 import { DOORKEEPER_ADAPTER } from "../adapters/adapter.interface";
 import { TypeOrmAdapter } from "../adapters/typeorm/typeorm.adapter";
@@ -11,8 +13,6 @@ import { AuthService } from "../services/auth.service";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { AuthController } from "../controllers/auth.controller";
 import { applyTablePrefix } from "../utils/table-prefix.util";
-import { UserEntity } from "../entities/user.entity";
-import { SessionEntity } from "../entities/session.entity";
 
 export interface AuthModuleAsyncOptions {
   imports?: any[];
