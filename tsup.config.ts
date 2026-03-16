@@ -10,6 +10,8 @@ export default defineConfig({
     "services/index": "src/services/index.ts",
     "entities/index": "src/entities/index.ts",
     "adapters/index": "src/adapters/index.ts",
+    // CLI (consumed by bin/doorkeeper.js at runtime)
+    "cli/index": "src/cli/index.ts",
   },
   format: ["cjs", "esm"], // ship both CommonJS and ESM
   target: "es2021",
