@@ -9,34 +9,34 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./guards": {
-      "require": "./dist/guards/index.js",
+      "types": "./dist/guards/index.d.ts",
       "import": "./dist/guards/index.mjs",
-      "types": "./dist/guards/index.d.ts"
+      "require": "./dist/guards/index.js"
     },
     "./decorators": {
-      "require": "./dist/decorators/index.js",
+      "types": "./dist/decorators/index.d.ts",
       "import": "./dist/decorators/index.mjs",
-      "types": "./dist/decorators/index.d.ts"
+      "require": "./dist/decorators/index.js"
     },
     "./services": {
-      "require": "./dist/services/index.js",
+      "types": "./dist/services/index.d.ts",
       "import": "./dist/services/index.mjs",
-      "types": "./dist/services/index.d.ts"
+      "require": "./dist/services/index.js"
     },
     "./entities": {
-      "require": "./dist/entities/index.js",
+      "types": "./dist/entities/index.d.ts",
       "import": "./dist/entities/index.mjs",
-      "types": "./dist/entities/index.d.ts"
+      "require": "./dist/entities/index.js"
     },
     "./adapters": {
-      "require": "./dist/adapters/index.js",
+      "types": "./dist/adapters/index.d.ts",
       "import": "./dist/adapters/index.mjs",
-      "types": "./dist/adapters/index.d.ts"
+      "require": "./dist/adapters/index.js"
     }
   },
   "bin": {

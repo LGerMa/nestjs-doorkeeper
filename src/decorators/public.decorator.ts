@@ -1,5 +1,5 @@
 import { SetMetadata } from "@nestjs/common";
+import { IS_PUBLIC_KEY } from "./keys";
 
-export const IS_PUBLIC_KEY = "doorkeeper:isPublic";
-
+export { IS_PUBLIC_KEY };
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
