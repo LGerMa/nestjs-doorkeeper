@@ -1,9 +1,27 @@
 {
   "name": "@lgerma/nestjs-doorkeeper",
-  "version": "1.0.0",
-  "keywords": [],
-  "author": "",
+  "version": "1.0.0-rc.1",
+  "description": "Drop-in NestJS authentication library with JWT, refresh tokens, session tracking, and device detection — inspired by Rails Doorkeeper",
+  "keywords": [
+    "nestjs",
+    "auth",
+    "authentication",
+    "jwt",
+    "refresh-token",
+    "session",
+    "typeorm",
+    "doorkeeper"
+  ],
+  "author": "lgerma",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lgerma/nestjs-doorkeeper.git"
+  },
+  "homepage": "https://github.com/lgerma/nestjs-doorkeeper#readme",
+  "bugs": {
+    "url": "https://github.com/lgerma/nestjs-doorkeeper/issues"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
