@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-03-16
+
+First stable release.
+
+### Added
+- Full authentication flow: `register`, `login`, `logout`, `logoutAll`
+- JWT access tokens + opaque refresh tokens with session rotation
+- `AuthModule.forRoot()` and `forRootAsync()` with configurable `tablePrefix`, `routePrefix`, `currentUser` mode, and JWT options
+- `TypeOrmAdapter` with `UserRepository` and `SessionRepository`
+- `JwtAuthGuard`, `RefreshGuard`, `@Public()`, `@CurrentUser()` decorators
+- Device and browser detection (iOS, Android, Windows, macOS, Linux)
+- `npx @lgerma/nestjs-doorkeeper init` CLI — detects ORM, generates TypeORM migration
+- Migration uses `gen_random_uuid()` (PostgreSQL 13+, no extension required)
+- Supports NestJS 10 and 11, TypeORM adapter only
+
+---
+
 ## [1.0.0-rc.6] - 2026-03-16
 
 ### Fixed
