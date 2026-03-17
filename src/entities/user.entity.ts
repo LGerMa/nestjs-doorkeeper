@@ -13,13 +13,13 @@ export class UserEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ unique: true })
+  @Column({ type: "varchar", unique: true })
   email: string;
 
-  @Column({ name: "password_hash" })
+  @Column({ name: "password_hash", type: "varchar" })
   passwordHash: string;
 
-  @Column({ name: "is_active", default: true })
+  @Column({ name: "is_active", type: "boolean", default: true })
   isActive: boolean;
 
   @OneToMany(() => SessionEntity, (session) => session.user)

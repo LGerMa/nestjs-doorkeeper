@@ -14,8 +14,8 @@ import { AuthModuleOptions, DOORKEEPER_OPTIONS } from "../module/auth.module.opt
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector,
-    private readonly tokenService: TokenService,
+    @Inject(Reflector) private readonly reflector: Reflector,
+    @Inject(TokenService) private readonly tokenService: TokenService,
     @Inject(DOORKEEPER_ADAPTER) private readonly adapter: IDoorkeeperAdapter,
     @Inject(DOORKEEPER_OPTIONS) private readonly options: AuthModuleOptions,
   ) {}

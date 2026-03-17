@@ -22,7 +22,7 @@ export interface TokenPair {
 export class SessionService {
   constructor(
     @Inject(DOORKEEPER_ADAPTER) private readonly adapter: IDoorkeeperAdapter,
-    private readonly tokenService: TokenService,
+    @Inject(TokenService) private readonly tokenService: TokenService,
   ) {}
 
   async createSession(
