@@ -19,6 +19,7 @@ export interface AuthModuleAsyncOptions {
   useFactory: (...args: any[]) => AuthModuleOptions | Promise<AuthModuleOptions>;
   inject?: any[];
   global?: boolean;
+  mountController?: boolean;
 }
 
 const SERVICE_PROVIDERS: Provider[] = [
@@ -55,7 +56,7 @@ export class AuthModule {
           signOptions: { expiresIn: (options.jwt.accessTokenTtl ?? "15m") as any },
         }),
       ],
-      controllers: [AuthController],
+      controllers: options.mountController === false ? [] : [AuthController],
       providers: [
         { provide: DOORKEEPER_OPTIONS, useValue: options },
         {
@@ -84,7 +85,7 @@ export class AuthModule {
           }),
         }),
       ],
-      controllers: [AuthController],
+      controllers: asyncOptions.mountController === false ? [] : [AuthController],
       providers: [
         {
           provide: DOORKEEPER_OPTIONS,
