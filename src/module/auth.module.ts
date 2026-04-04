@@ -35,6 +35,7 @@ const EXPORTS = [
   TokenService,
   JwtAuthGuard,
   DOORKEEPER_ADAPTER,
+  DOORKEEPER_OPTIONS,
 ];
 
 @Module({})
