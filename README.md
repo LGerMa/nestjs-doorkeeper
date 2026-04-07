@@ -13,6 +13,7 @@ Handles sessions, access tokens, refresh tokens, and device tracking out of the 
 - [Module Registration](#module-registration)
 - [Auth Routes](#auth-routes)
 - [Guards](#guards)
+- [Custom Auth Controller](#custom-auth-controller)
 - [Decorators](#decorators)
 - [Current User Modes](#current-user-modes)
 - [Configuration Reference](#configuration-reference)
@@ -221,6 +222,35 @@ customRefresh(@Req() req: any) {
 
 ---
 
+## Custom Auth Controller
+
+Set `mountController: false` to disable the built-in routes and implement your own using `AuthService` directly:
+
+```ts
+AuthModule.forRoot({
+  mountController: false,
+  jwt: { secret: process.env.JWT_SECRET },
+})
+```
+
+```ts
+import { AuthService, deviceFrom } from '@lgerma/nestjs-doorkeeper';
+
+@Controller('auth')
+export class MyAuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('login')
+  login(@Body() body: { email: string; password: string }, @Req() req: Request) {
+    return this.authService.login(body.email, body.password, deviceFrom(req));
+  }
+}
+```
+
+`deviceFrom(req)` extracts IP, User-Agent, and parsed device/browser info from any HTTP request object.
+
+---
+
 ## Decorators
 
 ### `@Public()`
@@ -295,6 +325,7 @@ Configured via `currentUser` in `forRoot`. Controls what `@CurrentUser()` return
 | `tablePrefix` | `string` | `'auth'` | Prefix for DB tables (`auth_users`, `auth_sessions`) |
 | `routePrefix` | `string` | `'auth'` | Prefix for HTTP routes (`/auth/login`, etc.) |
 | `global` | `boolean` | `true` | Register `JwtAuthGuard` globally |
+| `mountController` | `boolean` | `true` | Mount the built-in `AuthController`. Set to `false` to handle auth routes yourself |
 | `currentUser` | `'subset' \| 'payload' \| 'entity'` | `'subset'` | Shape of `@CurrentUser()` injection |
 
 TTL format: a number followed by a unit — `s` (seconds), `m` (minutes), `h` (hours), `d` (days).
@@ -306,7 +337,7 @@ Examples: `'30s'`, `'15m'`, `'2h'`, `'7d'`.
 
 | Import path | Exports |
 |---|---|
-| `@lgerma/nestjs-doorkeeper` | `AuthModule` |
+| `@lgerma/nestjs-doorkeeper` | `AuthModule`, `AuthService`, `SessionService`, `deviceFrom`, `DeviceInfo`, `Public`, `CurrentUser`, `JwtAuthGuard`, `RefreshGuard`, `UserEntity`, `SessionEntity` |
 | `@lgerma/nestjs-doorkeeper/guards` | `JwtAuthGuard`, `RefreshGuard` |
 | `@lgerma/nestjs-doorkeeper/decorators` | `@CurrentUser`, `@Public` |
 | `@lgerma/nestjs-doorkeeper/services` | `AuthService`, `SessionService`, `TokenService` |

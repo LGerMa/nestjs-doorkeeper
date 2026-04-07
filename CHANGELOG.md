@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] - 2026-04-07
+
+### Added
+- Exported `SessionService` from the root package entry point
+- Exported `deviceFrom` helper and `DeviceInfo` type from the root package — useful when building custom auth flows with `AuthService` directly
+- `mountController` option on `AuthModule.forRoot` / `forRootAsync` — set to `false` to disable the built-in `AuthController` and handle routes yourself via `AuthService`
+
+### Changed
+- `deviceFrom` extracted from a private controller method into a standalone utility in `device-parser.util.ts`, replacing the internal private method
+- Controller request parameters typed with explicit interfaces instead of `any`
+
+---
+
 ## [1.0.1] - 2026-03-16
 
 ### Added
