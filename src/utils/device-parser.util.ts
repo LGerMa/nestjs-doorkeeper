@@ -35,6 +35,20 @@ export function extractIp(headers: RequestHeaders, remoteAddress?: string): stri
   return remoteAddress ?? null;
 }
 
+export interface DeviceInfo extends ParsedDevice {
+  ipAddress: string | null;
+  userAgent: string | null;
+}
+
+export function deviceFrom(req: { headers?: Record<string, string | undefined>; socket?: { remoteAddress?: string } }): DeviceInfo {
+  const headers: RequestHeaders = req.headers ?? {};
+  return {
+    ipAddress: extractIp(headers, req.socket?.remoteAddress),
+    userAgent: headers["user-agent"] ?? null,
+    ...parseDevice(headers),
+  };
+}
+
 // ─── Private helpers ────────────────────────────────────────────────────────
 
 function parseOs(ua: string, platform?: string): { osName: string | null; osVersion: string | null } {
